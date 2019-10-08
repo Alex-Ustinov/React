@@ -1,10 +1,17 @@
 import React, {Component,PureComponent,useState} from 'react';
 import './Credit.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { makeStyles } from '@material-ui/core/styles';
+import Paper from '@material-ui/core/Paper';
+import Slider from '@material-ui/core/Slider';
+import Typography from '@material-ui/core/Typography';
+import {Checkbox, FormControlLabel, TextField ,OutlinedInput , Button} from '@material-ui/core/'
+
 
 class Credit extends PureComponent{
 
     constructor(props){
+
         super(props)
         this.state = {
             creditValue: 500000,
@@ -18,6 +25,7 @@ class Credit extends PureComponent{
         this.getPeriod = getPeriod.bind(this)
     }
 
+
     render() {
         const dataButton= [
             {id:1, completed:false, value:12},
@@ -27,12 +35,12 @@ class Credit extends PureComponent{
             {id:5, completed:false, value:60},
         ]
         return (
-            <div className="container">
-                <div className="div_about_credit">
-                    <div>
-                        <h2>Рассчитайте кредит</h2>
-                        <input type="number" className="App-input__sumCredit" value={ this.state.creditValue} onChange={this.sentAmountCredit}/>
-                        <input type="range" id="amountCredit" onChange={this.sentAmountCredit} className="App-input__range" min="75000" max="1000000" value={this.state.creditValue}/>
+
+                <div >
+                    <div className='wrapper'>
+                        <Typography>Рассчитайте кредит</Typography>
+                        <OutlinedInput type="number" fullWidth="true" value={ this.state.creditValue} onChange={this.sentAmountCredit}/>
+                        <Slider id="amountCredit" onChange={this.sentAmountCredit} min="75000" max="1000000" defaultValue={this.state.creditValue}/>
 
 
                         <div className="radio_buttons__div">
@@ -46,33 +54,30 @@ class Credit extends PureComponent{
                             }).bind(this))
                             }
                         </div>
+
+
                     </div>
                     <div className="div_information">
-                        <div>
+
                             <h2>{this.state.monthPay}</h2>
                             <p>Ежемесячный платёж</p>
-                            <div>
-                            </div>
+
+
                             <h2>{this.state.procent}</h2>
                             <p>Процентная ставка</p>
-                        </div>
-                        <div>
+
+
                             <h2>{this.state.creditValue}</h2>
                             <p>Сумма кредита</p>
-                        </div>
 
-                        <button>Оформить заявку</button>
+                        <Button size = "large" variant="contained" color="secondary">Оформить заявку</Button>
 
                     </div>
 
                 </div>
-                <div>
-
-                </div>
-            </div>
         )
     }
-    sentAmountCredit = (eve) => {
+    sentAmountCredit = (eve, value) => {
 
         const countMonth = this.state.countMonth
 
@@ -83,7 +88,7 @@ class Credit extends PureComponent{
         const res = (this.state.creditValue*(inProcent + (inProcent / (1+inProcent)*period))).toFixed(3)
 
         this.setState({
-            creditValue: eve.target.value,
+            creditValue: value,
             monthPay: res,
         })
     }
