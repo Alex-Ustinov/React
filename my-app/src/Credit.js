@@ -34,13 +34,14 @@ class Credit extends PureComponent{
             {id:4, completed:false, value:48},
             {id:5, completed:false, value:60},
         ]
+        //<Slider id="amountCredit" onChange={this.sentAmountCredit}  max="1000000" min="75000" defaultValue={this.state.creditValue}/>
         return (
 
                 <div className="main_bloc">
                     <div className='wrapper'>
                         <h2>Рассчитайте кредит</h2>
                         <OutlinedInput type="number" fullWidth="true" value={ this.state.creditValue} onChange={this.sentAmountCredit}/>
-                        <Slider id="amountCredit" onChange={this.sentAmountCredit} min="75000" max="1000000" defaultValue={this.state.creditValue}/>
+                        <input type="range" id="amountCredit" onChange={this.sentAmountCredit} className="App-input__range" min="75000" max="1000000" value={this.state.creditValue}/>
 
 
                         <div className="radio_buttons__div">
@@ -77,7 +78,9 @@ class Credit extends PureComponent{
                 </div>
         )
     }
-    sentAmountCredit = (eve, value) => {
+    sentAmountCredit = (e) => {
+
+        var value = e.target.value
 
         const countMonth = this.state.countMonth
 
