@@ -36,7 +36,7 @@ class Credit extends PureComponent{
         ]
         return (
 
-                <div >
+                <div className="main_bloc">
                     <div className='wrapper'>
                         <h2>Рассчитайте кредит</h2>
                         <OutlinedInput type="number" fullWidth="true" value={ this.state.creditValue} onChange={this.sentAmountCredit}/>
@@ -54,9 +54,10 @@ class Credit extends PureComponent{
                             }).bind(this))
                             }
                         </div>
-
-
                     </div>
+
+
+
                     <div className="div_information">
 
                             <h2>{this.state.monthPay}</h2>
@@ -73,7 +74,6 @@ class Credit extends PureComponent{
                         <Button size = "large" variant="contained" color="secondary">Оформить заявку</Button>
 
                     </div>
-
                 </div>
         )
     }
