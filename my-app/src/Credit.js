@@ -38,7 +38,7 @@ class Credit extends PureComponent{
 
                 <div >
                     <div className='wrapper'>
-                        <Typography>Рассчитайте кредит</Typography>
+                        <h2>Рассчитайте кредит</h2>
                         <OutlinedInput type="number" fullWidth="true" value={ this.state.creditValue} onChange={this.sentAmountCredit}/>
                         <Slider id="amountCredit" onChange={this.sentAmountCredit} min="75000" max="1000000" defaultValue={this.state.creditValue}/>
 
