@@ -1,0 +1,8 @@
+.article-list__li{
+    list-style: none;
+}
+.button-list{
+    width: 50px;
+    height: 30px;
+    display: inline-block;
+}
