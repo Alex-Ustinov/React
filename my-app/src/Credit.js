@@ -6,6 +6,7 @@ import Paper from '@material-ui/core/Paper';
 import Slider from '@material-ui/core/Slider';
 import Typography from '@material-ui/core/Typography';
 import {Checkbox, FormControlLabel, TextField ,OutlinedInput , Button} from '@material-ui/core/'
+import AddTodo from "./Todo/AddTodo";
 
 
 class Credit extends PureComponent{
@@ -71,13 +72,21 @@ class Credit extends PureComponent{
 
                             <h2>{this.state.creditValue}</h2>
                             <p>Сумма кредита</p>
-
-                        <Button size = "large" variant="contained" color="secondary">Оформить заявку</Button>
+                        <form onSubmit={this.submitHandler}>
+                            <Button size = "large" variant="contained" color="secondary" type="submit">Оформить заявку</Button>
+                        </form>
 
                     </div>
                 </div>
         )
     }
+
+    submitHandler = (event) => {
+        event.preventDefault()
+        let scroll = document.getElementById('information');
+        window.scrollTo(0,scroll.scrollHeight);
+    }
+
     sentAmountCredit = (e) => {
 
         var value = e.target.value
