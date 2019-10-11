@@ -1,6 +1,18 @@
 import React from 'react'
 import { ListItem ,OutlinedInput ,Hidden , InputAdornment , MenuItem, TextField} from '@material-ui/core';
-export default class AutoCompleteText extends React.Component{
+import { withStyles } from "@material-ui/core/styles";
+import { makeStyles } from '@material-ui/styles';
+
+const styles = {
+    li:{
+        justifyContent: 'space-beetween',
+        marginBottom: '.5rem'
+    },
+}
+
+//export default
+class AutoCompleteText extends React.Component{
+
     constructor (props){
         super(props)
 
@@ -22,12 +34,24 @@ export default class AutoCompleteText extends React.Component{
             textTown:'',
             suggestionsTown: [],
             statusFieldTown: false,
+            error: false,
         }
+
+    }
+
+    useStyles () {
+        makeStyles({
+            li: {
+                justifyContent: 'space-beetween',
+                marginBottom: '.5rem'
+            },
+        });
     }
 
     onTextChanged = (e) => {
         const value = e.target.value
-        console.log(value)
+        //console.log(value)
+        console.log(this.state.statusFieldTown)
         /*
         let suggestions =[]
         if(value.length > 0 ){
@@ -44,12 +68,13 @@ export default class AutoCompleteText extends React.Component{
             this.setState(()=>({
                 suggestions: [],
                 text:value,
-                statusFieldTown: !this.state.statusFieldTown
+                statusFieldTown: false,
+                error: true
             }))
         }else{
             const regex = new RegExp(`^${value}`,'i')
             const suggestions = this.items.sort().filter(v=>regex.test(v))
-            this.setState(()=>({suggestions:suggestions,text:value}))
+            this.setState(()=>({suggestions:suggestions,text:value, error: false}))
         }
 
     }
@@ -70,7 +95,7 @@ export default class AutoCompleteText extends React.Component{
         }
         return (
             <ul>
-                {suggestions.map((item) => <ListItem onClick={()=>(this.suggestionSelected(item))}>{item}</ListItem>)}
+                {suggestions.map((item,i) => <ListItem key = {i} onClick={()=>(this.suggestionSelected(item))}>{item}</ListItem>)}
             </ul>
         )
     }
@@ -86,6 +111,7 @@ export default class AutoCompleteText extends React.Component{
             this.setState(()=>({
                 suggestionsTown: [],
                 textTown:value,
+                error: true
             }))
         }else{
             const regex = new RegExp(`^${value}`,'i')
@@ -98,7 +124,7 @@ export default class AutoCompleteText extends React.Component{
                     suggestionsTown = town[k].sort().filter(v=>regex.test(v))
                 }
             }
-            this.setState(()=>({suggestionsTown:suggestionsTown,textTown:value}))
+            this.setState(()=>({suggestionsTown:suggestionsTown,textTown:value, error: false}))
         }
 
     }
@@ -127,14 +153,16 @@ export default class AutoCompleteText extends React.Component{
         const text = this.state.text
         const textTown = this.state.textTown
         var stateFieldTown = (this.state.statusFieldTown) ? "text" : "hidden"
-
+        //const classes = this.useStyles();
+        const { classes } = this.props;
         return (
             <div>
-                <OutlinedInput key = "1" fullWidth = "true"  placeholder="Регион проживания" value={text} onChange={this.onTextChanged} type="text"/>
+                <OutlinedInput key = "1" variant="outlined" className={classes.li} fullWidth = "true" error={this.state.error} placeholder="Регион проживания"  label="Регион проживания" value={text} onChange={this.onTextChanged} type="text"/>
                 {this.renderSuggestion()}
-                <OutlinedInput key = "2" fullWidth = "true"  placeholder="Город проживания" value={textTown} onChange={this.onTextChangedTown} type={stateFieldTown}/>
+                <OutlinedInput key = "2" variant="outlined" className={classes.li} fullWidth = "true" error={this.state.error} placeholder="Город проживания"  label="Город проживания" value={textTown} onChange={this.onTextChangedTown} type={stateFieldTown}/>
                 {this.renderSuggestionTown()}
             </div>
         )
     }
 }
+export default withStyles(styles)(AutoCompleteText);
