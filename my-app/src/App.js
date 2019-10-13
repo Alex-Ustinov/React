@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import TodoList from "./Todo/TodoList";
 import './App.css'
 import Context from './context'
@@ -9,12 +9,16 @@ import AutoCompleteText from './AutoCompleteText'
 import Credit from "./Credit";
 import { withStyles } from "@material-ui/core/styles";
 import InputMask from "react-input-mask";
+import SecondForm from "./Todo/SecondForm";
 
 const styles = {
     li:{
         justifyContent: 'space-beetween',
         marginBottom: '.5rem'
     },
+    div:{
+        visibility:'hidden',
+    }
 }
 
 function App(props) {
@@ -24,48 +28,73 @@ function App(props) {
         {id:4, error: false, label: "Телефон",  title: "+7(000)000-00-00" , value: '', format:"+7 (###) ###-####" , thousandSeparator:false },
     ])
 
+    const [dataFio, setFio] = useState('')
+    const [seconForm , getSecondForm] = useState(false)
+    const [checkBox , setCheckBox] = useState(false)
+
     function toggleTodo (id, eventValue) {
         setTodos(
             todos.map(todo => {
-                if(!eventValue && (Number(id )=== Number(todo.id))){
+                if((!eventValue) && (Number(id )=== Number(todo.id))){
                     todo.error = !todo.error
+                }else if((eventValue) && (Number(id )=== Number(todo.id))){
                     todo.value = eventValue
                 }
-
                 return todo
             })
         )
     }
+    let destination = []
 
-    function removeTodo(id){
-        setTodos(todos.filter(todo => todo.id !== id))
+    function updateData (value) {
+        destination.length = 0
+        destination.push(value)
+        return destination
     }
 
-    function addTodo (data){
-
+    function setFioPeople (e){
+        setFio([
+            {value: e.target.value}
+        ])
     }
+
+    let namePeople = ''
+    function getFio(e){
+        namePeople = e.target.value
+    }
+
+    function vefificationFerstForm (answer){
+        if(checkBox){
+            getSecondForm(answer)
+        }
+    }
+
     const { classes } = props;
-
     return (
 
-            <Context.Provider value = {{removeTodo: removeTodo}}>
+            <Context.Provider value = {{todos: todos}}>
                 <Credit/>
-                    <div id="information"className='wrapper_bloc'>
-                        <h2>Заявка на получение кредита</h2>
-                        <TextField variant="outlined" label="ФИО" fullWidth = "true"  placeholder="ФИО" className = {classes.li}/>
-                        <TodoList todos={ todos } onToggle = {toggleTodo}/>
-                        <AutoCompleteText/>
-                        <FormControlLabel
-                            control={
-                                <Checkbox
-                                    value="checkedB"
-                                    color="primary"
-                                />
-                            }
-                            label="Даю согласие на обработку своих персональных данных в соответствии с"
-                        />
-                        <AddTodo onCreate = {addTodo}/>
+                    <div id="information" className='wrapper_bloc'>
+                        <div className={seconForm ? 'wrapper_bloc_hide' : 'wrapper_bloc'}>
+                            <h2>Заявка на получение кредита</h2>
+                            <TextField variant="outlined" label="ФИО" fullWidth = "true"  placeholder="ФИО" className = {classes.li} onChange = {setFioPeople}/>
+                            <TodoList todos={ todos } onToggle = {toggleTodo}/>
+                            <AutoCompleteText getStatePlase = {updateData}/>
+                            <FormControlLabel
+                                control={
+                                    <Checkbox
+                                        value={checkBox}
+                                        color="primary"
+                                        onChange={(e)=>{setCheckBox(true) }}
+                                    />
+                                }
+                                label="Даю согласие на обработку своих персональных данных в соответствии с"
+                            />
+                            <AddTodo dataDestination = {destination} fio = {dataFio} response = {vefificationFerstForm}/>
+                        </div>
+                        {seconForm &&  <SecondForm/>}
                     </div>
+
             </Context.Provider>
 
     )
