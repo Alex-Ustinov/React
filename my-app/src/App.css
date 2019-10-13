@@ -20,11 +20,15 @@
 .App-link {
   color: #09d3ac;
 }
-.wrapper {
-  padding-top: 5rem;
+.wrapper_bloc {
+  padding-top: 1045px;
   margin: 0 auto;
   width: 600px;
 }
+.wrapper_bloc_hide{
+  opacity: 0;
+}
+
 .rm {
   background: red;
   border-radius: 50%;
